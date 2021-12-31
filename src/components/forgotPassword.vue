@@ -89,7 +89,7 @@ export default {
           {
             connection: this.dbConection,
             email: this.email,
-            redirectUri: "http://localhost:8080/",
+            redirectUri: "https://abbaskhana-abbaskhana.vercel.app/",
             
           },
           (er, res) => {

@@ -84,7 +84,7 @@ export default {
             options:{
         domain: 'dev-umvzke5g.us.auth0.com',
         clientID: 'ERQjBmxDVbf8LfgPukVTEKfkV8sTui7j',
-        redirectUri: 'http://localhost:8080/',
+        redirectUri: 'https://abbaskhana-abbaskhana.vercel.app/',
         responseType: 'id_token'
       }
         }
