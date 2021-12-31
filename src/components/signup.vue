@@ -84,12 +84,16 @@ export default {
             options:{
         domain: 'dev-umvzke5g.us.auth0.com',
         clientID: 'ERQjBmxDVbf8LfgPukVTEKfkV8sTui7j',
-        redirectUri: 'https://abbaskhana-abbaskhana.vercel.app/',
+        redirectUri: 'http://localhost:8080/',
         responseType: 'id_token'
       }
         }
     },
-
+    created(){
+        if(this.$route.hash!=''){
+            console.log("tokan data ",this.$route.hash.split('=')[1])
+        }
+    },
     methods: {
         signupUser(){
         const webAuth = new auth0.WebAuth(this.options);
