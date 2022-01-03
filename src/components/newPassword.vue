@@ -14,12 +14,12 @@
                         </svg>
                     </div>
                     <div class="pt-10 px-2 flex flex-col items-center justify-center">
-                        <h3 class="text-2xl md:text-3xl sm:text-4xl font-bold leading-tight">Enter  Your Email </h3>
+                        <h3 class="text-2xl md:text-3xl sm:text-4xl font-bold leading-tight">Enter Your New Password</h3>
                     </div>
                     <div class="mt-12 w-full px-2 sm:px-6">
                         <div class="flex flex-col mt-5">
-                            <label for="email" class="text-lg font-semibold leading-tight">Email</label>
-                            <input required id="email" v-model="email" name="email" class="h-10 px-2 w-full rounded mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 border-gray-300 border shadow" type="email" />
+                            <label for="password" class="text-lg font-semibold fleading-tight">Password</label>
+                            <input required id="password" v-model="password" name="password" class="h-10 px-2 w-full rounded mt-2 text-gray-600 focus:outline-none focus:border dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 focus:border-indigo-700 border-gray-300 border shadow" type="password" />
                         </div>
                     </div>
                     <!-- <div class="pt-6 w-full flex justify-between px-2 sm:px-6">
@@ -30,7 +30,7 @@
                         <a class="text-xs text-indigo-600" href="javascript: void(0)">Forgot Password?</a>
                     </div> -->
                     <div class="px-2 sm:mb-16 sm:px-6">
-                        <button @click="changePassword()" class="focus:outline-none w-full sm:w-auto bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-8 py-3 text-sm mt-6">Submit</button>
+                        <button @click="changePassword()" class="focus:outline-none w-full sm:w-auto bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-8 py-3 text-sm mt-6">Forgot Password</button>
                         <!-- <p class="mt-12 sm:mt-32 text-xs text-center">Don’t Have An Account? <a class="underline text-indigo-600" href="javascript: void(0)">Sign Up</a></p> -->
                     </div>
                 </div>
@@ -70,21 +70,25 @@ import { supabase } from '@/supabaseClient.js'
 export default {
     data(){
         return{
-            email:""
+            password:"",
+            access_token:null
         }
     },
-    created(){
-        // if(this.$route.hash!=''){
-        //     console.log("tokan data ",this.$route.hash.split('=')[1])
-        // }
+    mounted(){
+        console.log("my token",this.$route)
+        if(this.$route.hash!=''){
+            console.log("tokan data1 ",this.$route.hash.split('=')[1])
+            var alltoken =this.$route.hash.split('=')[1]
+            console.log("tokan data2 ",this.access_token=alltoken.split('&')[0])
+            this.access_token=alltoken.split('&')[0]
+        }
     },
     methods: {
         async changePassword (){
            const { data, error } = await supabase.auth.api
-  .resetPasswordForEmail(this.email,{
-      redirectTo:"http://localhost:8080/newPassword"
-  })
+  .updateUser(this.access_token, { password : this.password })
 console.log(data, error)
+this.$router.push({ path: '/' })
         },
     },
 };

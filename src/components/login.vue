@@ -70,44 +70,29 @@
 </template>
 
 <script>
+import { supabase } from '@/supabaseClient.js'
 export default {
     data(){
         return{
             email:"",
             password:"",
-            options:{
-        domain: 'dev-umvzke5g.us.auth0.com',
-        clientID: 'ERQjBmxDVbf8LfgPukVTEKfkV8sTui7j',
-        redirectUri: 'https://abbaskhana-abbaskhana.vercel.app/',
-        responseType: 'id_token'
-      }
         }
     },
     created(){
-        if(this.$route.hash!=''){
-            console.log("tokan data ",this.$route.hash.split('=')[1])
-        }
+        // if(this.$route.hash!=''){
+        //     console.log("tokan data ",this.$route.hash.split('=')[1])
+        // }
     },
     methods: {
-        loginUser(){
-        const webAuth = new auth0.WebAuth(this.options);
-        webAuth.login(
-          {
-            responseType: 'id_token',
-            email: this.email,
-            password: this.password,
-            realm: 'Username-Password-Authentication',
-            redirectUri:'https://abbaskhana-abbaskhana.vercel.app/',
-            onRedirecting: function(done) {
-              console.log('On redirecting..');
-              done();
-            }
-          },
-          function(err) {
-            console.error(err);
-          }
-        );
+        async loginUser (){
+           const { user, session, error } = await supabase.auth.signIn({
+  email: this.email,
+  password: this.password,
+}) 
+console.log(user,session, error)
         },
+
+        
 
 
 

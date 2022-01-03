@@ -14,16 +14,12 @@
                         </svg>
                     </div>
                     <div class="pt-10 px-2 flex flex-col items-center justify-center">
-                        <h3 class="text-2xl md:text-3xl sm:text-4xl font-bold leading-tight">Login To Your Account</h3>
+                        <h3 class="text-2xl md:text-3xl sm:text-4xl font-bold leading-tight">SingUp To Your Account</h3>
                     </div>
                     <div class="mt-12 w-full px-2 sm:px-6">
                         <div class="flex flex-col mt-5">
                             <label for="email" class="text-lg font-semibold leading-tight">Email</label>
                             <input required id="email" v-model="email" name="email" class="h-10 px-2 w-full rounded mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 border-gray-300 border shadow" type="email" />
-                        </div>
-                        <div class="flex flex-col mt-5">
-                            <label for="userName" class="text-lg font-semibold leading-tight">User Name</label>
-                            <input required id="userName" v-model="userName" name="userName" class="h-10 px-2 w-full rounded mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 border-gray-300 border shadow" type="text" />
                         </div>
                         <div class="flex flex-col mt-5">
                             <label for="password" class="text-lg font-semibold fleading-tight">Password</label>
@@ -74,48 +70,24 @@
 </template>
 
 <script>
+import { supabase } from '@/supabaseClient.js'
+
 export default {
     data(){
         return{
             email:"",
-            userName:"",
             password:"",
-            dbConection:"Username-Password-Authentication",
-            options:{
-        domain: 'dev-umvzke5g.us.auth0.com',
-        clientID: 'ERQjBmxDVbf8LfgPukVTEKfkV8sTui7j',
-        redirectUri: 'http://localhost:8080/',
-        responseType: 'id_token'
-      }
         }
     },
-    created(){
-        if(this.$route.hash!=''){
-            console.log("tokan data ",this.$route.hash.split('=')[1])
-        }
-    },
+
     methods: {
-        signupUser(){
-        const webAuth = new auth0.WebAuth(this.options);
-        webAuth.signup(
-          {
-            connection: this.dbConection,
-			username: this.userName,
-            email: this.email,
-            password: this.password,
-            
-          },
-          (er, res) => {
-				if (res) {
-					if (res.email) {
-						console.log("email",res.email)
-					}
-				}
-				if (er) {
-					console.log("error in signup",er)
-				}
-			}
-        );
+        async signupUser (){
+           const { user, session, error } = await supabase.auth.signUp({
+  email: this.email,
+  password: this.password,
+}) 
+console.log(user, error, password)
+this.$router.push({ path: '/' })
         },
     },
 };
